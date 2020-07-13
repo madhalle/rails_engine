@@ -36,14 +36,15 @@ describe "Items API" do
   end
 
   it "can update an existing item" do
-    id = create(:item).id
+    item = create(:item)
+    id = item.id
     previous_item_name = Item.last.name
     item_params = { name: "oogabooga"}
 
     put "/api/v1/items/#{id}", params: {item: item_params}
-    item = Item.find_by(id: :id)
-    
-    expect(respone).to be_successful
+    item = Item.find_by(id: id)
+
+    expect(response).to be_successful
     expect(item.name).to_not eq(previous_item_name)
     expect(item.name).to eq("oogabooga")
   end
