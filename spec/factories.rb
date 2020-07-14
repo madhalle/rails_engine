@@ -16,8 +16,10 @@ FactoryBot.define do
     description { Faker::Movies::Ghostbusters.quote }
     unit_price { rand(199..9999) }
   end
+end
 
+FactoryBot.define do
   factory :merchant do
-    name {"McLovin shop"}
+    name {Faker::Movies::PrincessBride.character}
   end
 end

@@ -7,7 +7,6 @@ describe "Merchants API" do
 
     get api_v1_merchants_path
     expect(response).to be_successful
-
     merchants = JSON.parse(response.body)
     expect(merchants["data"].count).to eq(2)
   end
@@ -16,9 +15,8 @@ describe "Merchants API" do
     merchant = create(:merchant)
     get "/api/v1/merchants/#{merchant.id}"
     expect(response).to be_successful
-
-    itemus = JSON.parse(response.body)
-    expect(itemus["data"]["attributes"]["name"]).to eq(merchant.name)
+    merchantemus = JSON.parse(response.body)
+    expect(merchantemus["data"]["attributes"]["name"]).to eq(merchant.name)
   end
 
   xit "can create a new merchant" do
