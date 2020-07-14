@@ -2,51 +2,47 @@ require 'rails_helper'
 
 describe "Items API" do
   it "sends a list of items" do
+    create(:item)
+    create(:item)
 
-    create_list(:item, 3)
     get api_v1_items_path
     expect(response).to be_successful
 
     items = JSON.parse(response.body)
-    expect(items.count).to eq(3)
+    expect(items["data"].count).to eq(2)
   end
 
-  it "can get one item but its id" do
-    id = create(:item).id
-
-    get "/api/v1/items/#{id}"
-
-    item = JSON.parse(response.body)
+  it "can get one item by its id" do
+    item = create(:item)
+    get "/api/v1/items/#{item.id}"
     expect(response).to be_successful
-    expect(item["id"]).to eq(id)
+
+    itemus = JSON.parse(response.body)
+    expect(itemus["data"]["attributes"]["name"]).to eq(item.name)
   end
 
   it "can create a new item" do
     merchant1 = create(:merchant)
-    item_params = { name: "mclovviiiinn",
-                    description: "u know u know",
-                    unit_price: 107.02,
-                    merchant_id: merchant1.id}
+    item = build(:item, merchant: merchant1)
 
-    post "/api/v1/items", params: {item: item_params}
-    item = Item.last
+    post "/api/v1/items", params: item.attributes
 
     expect(response).to be_successful
-    expect(item.name).to eq(item_params[:name])
+    body = response.body
+    response = JSON.parse(body)
+    expect(response["data"]["attributes"]["name"]).to eq(item.name)
+    expect(response["data"]["attributes"]["description"]).to eq(item.description)
   end
 
   it "can update an existing item" do
+    merchant1 = create(:merchant)
     item = create(:item)
-    id = item.id
-    previous_item_name = Item.last.name
-    item_params = { name: "oogabooga"}
+    updated_item = build(:item, merchant: merchant1)
 
-    put "/api/v1/items/#{id}", params: {item: item_params}
-    item = Item.find_by(id: id)
+    put "/api/v1/items/#{item.id}", params: updated_item.attributes
 
     expect(response).to be_successful
-    expect(item.name).to_not eq(previous_item_name)
-    expect(item.name).to eq("oogabooga")
+    expect(item.name).to_not eq(updated_item.name)
   end
 
   it "can destroy an item" do
@@ -59,6 +55,5 @@ describe "Items API" do
     expect(response).to be_successful
     expect(Item.count).to eq(0)
     expect{Item.find(item.id)}.to raise_error{ActiveRecord::RecordNotFound}
-
   end
 end
