@@ -19,9 +19,8 @@ describe "Merchants API" do
     expect(merchantemus["data"]["attributes"]["name"]).to eq(merchant.name)
   end
 
-  xit "can create a new merchant" do
-    merchant1 = create(:merchant)
-    merchant = build(:merchant, merchant: merchant1)
+  it "can create a new merchant" do
+    merchant = build(:merchant)
 
     post "/api/v1/merchants", params: merchant.attributes
 
@@ -29,7 +28,6 @@ describe "Merchants API" do
     body = response.body
     response = JSON.parse(body)
     expect(response["data"]["attributes"]["name"]).to eq(merchant.name)
-    expect(response["data"]["attributes"]["description"]).to eq(merchant.description)
   end
 
   xit "can update an existing merchant" do
