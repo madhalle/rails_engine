@@ -42,5 +42,8 @@ task import: :environment do
   CSV.foreach('./data/transactions.csv', headers: true, header_converters: :symbol, converters: :all) do |row|
     Transaction.create(row.to_h)
   end
+  ActiveRecord::Base.connection.tables.each do |t|
+    ActiveRecord::Base.connection.reset_pk_sequence!(t)
+  end
   puts 'preparing to kick ass'
 end
