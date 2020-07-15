@@ -6,10 +6,11 @@ describe "Merchant Find" do
     create(:merchant, name: "chill")
     create(:merchant, name: "BILL")
     create(:merchant, name: "charlie")
-    get "/api/v1/merchants/find_all?name=ILL'"
+    get "/api/v1/merchants/find_all?name=ILL"
 
     expect(response).to be_successful
     ill_merchants = JSON.parse(response.body)
+    require "pry"; binding.pry
     expect(ill_merchants["data"].count).to eq(3)
   end
 end
