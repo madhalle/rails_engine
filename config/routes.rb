@@ -10,7 +10,3 @@ Rails.application.routes.draw do
     end
   end
 end
-
-# namespace :merchants do
-#   get 'search_controller/show'
-# end
