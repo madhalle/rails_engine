@@ -23,3 +23,37 @@ FactoryBot.define do
     name {Faker::Movies::PrincessBride.character}
   end
 end
+
+FactoryBot.define do
+  factory :customer do
+    first_name {Faker::Movies::PrincessBride.character}
+    last_name {Faker::Movies::StarWars.character}
+  end
+end
+
+FactoryBot.define do
+  factory :invoice do
+    status {"shipped"}
+    association :merchant
+    association :customer
+    association :transactions
+  end
+end
+
+FactoryBot.define do
+  factory :invoice_item do
+    quantity {rand(1..11)}
+    association :item
+    unit_price {item.unit_price}
+    association :invoice
+  end
+end
+
+FactoryBot.define do
+  factory :transactions do
+    creadit_card_number {rand(4000000000000000..5000000000000000)}
+    credit_card_expiration_date { " " }
+    result {rand("success", "failed")}
+    association :invoice
+  end
+end
