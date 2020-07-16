@@ -20,7 +20,7 @@ describe "Merchant Find" do
 
     expect(response).to be_successful
     merchant = JSON.parse(response.body)
-    expect(merchant["data"].class).to eq(Hash)
+    expect(merchant["data"].class).to eq(Hash)  
     expect(merchant["data"]["attributes"]["name"]).to eq(m1.name)
   end
 end
